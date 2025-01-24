@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Navbar from './Components/Navbar';
+import Product from './Components/Product';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ProductDetail from './Components/ProductDetail';
+import SearchItem from './Components/SearchItem';
+import Cart from './Components/Cart';
+import { items } from './Components/Data';
 
-function App() {
+const App = () => {
+  const [data] = useState([...items]); 
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Product items={data} />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/search/:term" element={<SearchItem />} />
+          <Route path="/cart" element={<Cart />} />
+        </Routes>
+      </Router>
+    </>
   );
-}
+};
 
 export default App;
