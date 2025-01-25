@@ -1,35 +1,62 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { items } from './Data';
 
-const Navbar = () => {
-    return (
-        <>
-            <header>
-                <div className='nav-bar'>
-                    <Link to={"/"} className='brand'>E-cart</Link>
-                    <div className='search-bar'>
-                        <input type='text' placeholder='Search Product'></input>
-                    </div>
-                    <Link to={'/cart'} className='cart'>Cart</Link>
-                </div>
+const Navbar = ({ setData }) => {
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
 
-                <div className='nav-bar-wrapper'>
-                    <div className='items'> Filter by {"->"}</div>
-                    <div className='items'> No Filter</div>
-                    <div className='items'> Laptop</div>
-                    <div className='items'> Mobole</div>
-                    <div className='items'> Tablet </div>
-                    <div className='items'>{">="}29,000</div>
-                    <div className='items'>{">="}49,000</div>
-                    <div className='items'>{">="}59,000</div>
-                    <div className='items'>{">="}69,000</div>
+  const filterByCategory = (category) => {
+    const element = items.filter((product) => product.category === category);
+    setData(element);
+  };
 
-                </div>
+  const filterByPrice = (price) => {
+    const element = items.filter((product) => product.price >= price);
+    setData(element);
+  };
 
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Fixed typo here
+    navigate(`/search/${searchTerm}`);
+    setSearchTerm('')
+  };
 
-            </header>
-        </>
-    )
-}
+  return (
+    <>
+      <header className='sticky-top'>
+        <div className='nav-bar'>
+          <Link to="/" className='brand'>E-cart</Link>
 
-export default Navbar
+          <form 
+            onSubmit={handleSubmit}
+            className='search-bar'
+          >
+            <input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              type="text"
+              placeholder="Search Product"
+            />
+          </form>
+
+          <Link to="/cart" className='cart'>Cart</Link>
+        </div>
+
+        <div className='nav-bar-wrapper'>
+          <div className='items'>Filter by {"->"}</div>
+          <div onClick={() => setData(items)} className='items'>No Filter</div>
+          <div onClick={() => filterByCategory('laptops')} className='items'>Laptop</div>
+          <div onClick={() => filterByCategory('mobiles')} className='items'>Mobile</div>
+          <div onClick={() => filterByCategory('tablets')} className='items'>Tablet</div>
+          <div onClick={() => filterByPrice(29999)} className='items'>{">="}29999</div>
+          <div onClick={() => filterByPrice(49999)} className='items'>{">="}49999</div>
+          <div onClick={() => filterByPrice(69999)} className='items'>{">="}69999</div>
+          <div onClick={() => filterByPrice(89999)} className='items'>{">="}89999</div>
+        </div>
+      </header>
+    </>
+  );
+};
+
+export default Navbar;
