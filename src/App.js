@@ -10,16 +10,18 @@ import { items } from "./Components/Data";
 
 const App = () => {
   const [data, setData] = useState([...items]);
+  const [cart, setCart] = useState([]); // cart is an empty array initially
+
 
   return (
     <>
       <Router>
-        <Navbar setData={setData} /> {/* Pass setData as a prop */}
+        <Navbar cart={cart}  setData={setData} /> {/* Pass setData as a prop */}
         <Routes>
-          <Route path='/' element={<Product items={data} />} />
+          <Route path='/' element={<Product  cart={cart} setCart={setCart}items={data} />} />
           <Route path='/product/:id' element={<ProductDetail />} />
           <Route path='/search/:term' element={<SearchItem />} />
-          <Route path='/cart' element={<Cart />} />
+          <Route path='/cart' element={<Cart cart={cart}setCart={setCart} />} />
         </Routes>
       </Router>
     </>

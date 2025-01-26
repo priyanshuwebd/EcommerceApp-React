@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { items } from './Data';
 
-const Navbar = ({ setData }) => {
+const Navbar = ({ setData, cart }) => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -17,9 +17,9 @@ const Navbar = ({ setData }) => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Fixed typo here
+    e.preventDefault();
     navigate(`/search/${searchTerm}`);
-    setSearchTerm('')
+    setSearchTerm('');
   };
 
   return (
@@ -28,7 +28,7 @@ const Navbar = ({ setData }) => {
         <div className='nav-bar'>
           <Link to="/" className='brand'>E-cart</Link>
 
-          <form 
+          <form
             onSubmit={handleSubmit}
             className='search-bar'
           >
@@ -40,7 +40,17 @@ const Navbar = ({ setData }) => {
             />
           </form>
 
-          <Link to="/cart" className='cart'>Cart</Link>
+          <Link to="/cart" className='cart'>
+            {/* Updated Cart Button */}
+            <button type="button" className="btn btn-primary position-relative">
+              Cart
+              <span
+                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              >
+                {cart.length}
+              </span>
+            </button>
+          </Link>
         </div>
 
         <div className='nav-bar-wrapper'>
