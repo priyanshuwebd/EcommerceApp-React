@@ -1,11 +1,20 @@
 import React from 'react'
-import Product from './Product'
+import { Link } from 'react-router-dom'
 
 const Cart = ({cart,setCart}) => {
   return (
    <>
 <div classNameName='container my-5 ' style={{Width:"53%"}}>
-{cart.map((product)=>{
+{
+  cart.length ===0 ?(
+    <>
+      <div className='text-center'>
+        <h1> Your Cart is Empty</h1>
+        <Link to={'/'} className='btn btn-warning'> Continue Shopping ...</Link>
+      </div>
+    </>
+  ):
+  cart.map((product)=>{
   return(
     <>
     <div className="card mb-3" style={{width:'700px'}}>
@@ -34,7 +43,22 @@ const Cart = ({cart,setCart}) => {
   )
 })}
 
+
 </div>
+{
+  cart.length!==0 && (
+    <div className='container text-center my-5' style={{
+  display:'flex',
+  justifyContent:'center',
+  alignItems:'center'
+}}>
+  <button className='btn btn-warning mx-5'>CheckOut</button>
+  <button onClick={()=>setCart("")}      className='btn btn-danger'>Clear Cart</button>
+</div>
+  )
+}
+
+
    </>
   )
 }
